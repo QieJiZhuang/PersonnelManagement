@@ -1,39 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using Newtonsoft.Json;
+using Personnel_ManagementIServer;
+using Personnel_ManagementModel;
+using System.Data;
 using System.Web.Http;
 
 namespace Personnel_ManagementApi.Controllers
 {
+
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        public IUserService userService { get; set; }
 
-        // POST api/values
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [HttpGet]
+        public string GetUserInfo(int id)   
         {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            ResponseModel responseModel = new ResponseModel();
+            DataTable dt = userService.GetUserInfo(1);
+            responseModel.Code = 200;
+            responseModel.Data = JsonConvert.SerializeObject(dt);
+            responseModel.Msg = "";
+            return JsonConvert.SerializeObject(responseModel);
         }
     }
+
+
 }

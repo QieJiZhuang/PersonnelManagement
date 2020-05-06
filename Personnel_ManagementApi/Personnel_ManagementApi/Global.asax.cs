@@ -1,6 +1,12 @@
+using Autofac;
+using Autofac.Integration.Mvc;
+using Personnel_ManagementApi.App_Start;
+using Personnel_ManagementIServer;
+using Personnel_ManagementServer.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,6 +24,16 @@ namespace Personnel_ManagementApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // AutoFac ×¢Èë³õÊ¼»¯
+            AutoFacBootStrapper.CoreAutoFacInit();
+        }
+        protected void Application_BeginRequest()
+        {
+            if (Request.Headers.AllKeys.Contains("Origin") && Request.HttpMethod == "OPTIONS")
+            {
+                Response.End();
+            }
         }
     }
 }
